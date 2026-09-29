@@ -1,19 +1,20 @@
-// Demo 5: estimate Jev cost before writing integration code (no API key needed).
-// Formula from flaviocopes.com/jev-pricing (overestimates ~20%, fine for budgeting).
-const PRICE_PER_MILLION = 0.042
+// Demo 5: estimate what a workload costs on Jev (no API key needed).
+// Price: $42 per billion input tokens, output tokens free (typesafe.ai, docs.typesafe.ai/models).
+// Tokens per call: send one real request and read usage.input_tokens.
+// The workshop's hands-on request (one short message, 3 questions) used about 480.
+const PRICE_PER_TOKEN = 42 / 1e9
+const USD_TO_TWD = 32 // rough exchange rate; adjust to today's
 
-function estimateCost({ items, charsPerItem, questions }) {
-  const tokensPerCall = 300 + charsPerItem / 4 + questions * 50
-  const totalTokens = items * tokensPerCall
-  return { tokensPerCall, totalTokens, cost: `$${((totalTokens / 1e6) * PRICE_PER_MILLION).toFixed(2)}` }
+function estimate({ items, tokensPerCall }) {
+  const usd = items * tokensPerCall * PRICE_PER_TOKEN
+  return { items, tokensPerCall, usd: `$${usd.toFixed(4)}`, twd: `NT$${(usd * USD_TO_TWD).toFixed(2)}` }
 }
 
-const [items, charsPerItem, questions] = process.argv.slice(2).map(Number)
+const [items, tokensPerCall] = process.argv.slice(2).map(Number)
 if (items) {
-  console.log(estimateCost({ items, charsPerItem, questions }))
+  console.log(estimate({ items, tokensPerCall: tokensPerCall || 480 }))
 } else {
-  console.log('support tickets', estimateCost({ items: 100_000, charsPerItem: 800, questions: 5 }))
-  console.log('product reviews', estimateCost({ items: 1_000_000, charsPerItem: 400, questions: 3 }))
-  console.log('contracts      ', estimateCost({ items: 5_000, charsPerItem: 40_000, questions: 10 }))
-  console.log('\nyour workload:  node 05-cost.mjs <items> <charsPerItem> <questions>')
+  console.log('1,000 customer messages  ', estimate({ items: 1_000, tokensPerCall: 480 }))
+  console.log('100,000 customer messages', estimate({ items: 100_000, tokensPerCall: 480 }))
+  console.log('\nyour workload:  node 05-cost.mjs <items> <tokensPerCall>')
 }

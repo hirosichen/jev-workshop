@@ -9,6 +9,24 @@
 
 ---
 
+## 🎬 實測影片
+
+每支影片都是在 TypeSafe Playground 或命令列實際操作錄下來的畫面（2026/09/29），點連結即可在瀏覽器播放。
+
+| 影片 | 內容 | 長度 |
+| --- | --- | --- |
+| [▶ 完整版](https://github.com/hirosichen/jev-workshop/raw/main/videos/00-full-tutorial.mp4) | 實作一 → 實作二 → 四個案例 | 2 分 25 秒 |
+| [▶ 實作一：Playground](https://github.com/hirosichen/jev-workshop/raw/main/videos/01-hands-on-playground.mp4) | 貼資料、貼題目、按 Run、看結果 | 22 秒 |
+| [▶ 實作二：命令列](https://github.com/hirosichen/jev-workshop/raw/main/videos/02-hands-on-terminal.mp4) | Windows PowerShell 與 Mac 終端機呼叫 Jev | 33 秒 |
+| [▶ 案例 1：電商評論](https://github.com/hirosichen/jev-workshop/raw/main/videos/03-case1-review.mp4) | 一次問 4 題 | 22 秒 |
+| [▶ 案例 2：詐騙簡訊](https://github.com/hirosichen/jev-workshop/raw/main/videos/04-case2-scam.mp4) | 看懂意思，不靠關鍵字 | 22 秒 |
+| [▶ 案例 3：履歷初篩](https://github.com/hirosichen/jev-workshop/raw/main/videos/05-case3-resume.mp4) | 條件逐項判斷 | 22 秒 |
+| [▶ 案例 4：說不清楚的客訴](https://github.com/hirosichen/jev-workshop/raw/main/videos/06-case4-unclear.mp4) | 不確定時會說不確定 | 23 秒 |
+
+> Jev 的結果是機率，每次執行可能相差幾個百分點，所以影片、講義與你自己跑出的數字不會完全一樣。
+
+---
+
 ## 實作一：不寫程式，用 Playground 做第一個判斷
 
 1. 用 Chrome 開啟 <https://console.typesafe.ai>，點「Continue with Google」登入。
@@ -17,6 +35,8 @@
 4. 按右下角「Run」，看右側 Response。
 
 ### 實作一範例：客服訊息分流
+
+[▶ 看實測影片](https://github.com/hirosichen/jev-workshop/raw/main/videos/01-hands-on-playground.mp4)
 
 預期結果：angry 約 92% true、team 選 tech（100%）、urgency 為 2 of 2（很急）。
 
@@ -65,6 +85,8 @@
 
 ### Windows（PowerShell）
 
+[▶ 看實測影片](https://github.com/hirosichen/jev-workshop/raw/main/videos/02-hands-on-terminal.mp4)
+
 按開始鍵，輸入 PowerShell 開啟，把第一行換成你的金鑰後整段貼上：
 
 ```powershell
@@ -102,6 +124,8 @@ curl -s https://api.typesafe.ai/v1/systemone -H "Authorization: Bearer $TYPESAFE
 每個案例都可以照樣貼進 Playground 自己試。
 
 ### 案例 1　電商評論分析｜一次問 4 題，約 0.3 秒
+
+[▶ 看實測影片](https://github.com/hirosichen/jev-workshop/raw/main/videos/03-case1-review.mp4)
 
 講義實測：有好有壞 83%｜抱怨物流 95%｜商品瑕疵 17%｜推薦意願 2（最高級）。
 
@@ -148,6 +172,8 @@ curl -s https://api.typesafe.ai/v1/systemone -H "Authorization: Bearer $TYPESAFE
 
 ### 案例 2　詐騙簡訊判斷｜看懂意思，不靠關鍵字
 
+[▶ 看實測影片](https://github.com/hirosichen/jev-workshop/raw/main/videos/04-case2-scam.mp4)
+
 講義實測：詐騙 90%｜類型「假冒客服」100%｜風險 1.9。範例訊息為講師自行撰寫的示範內容。
 
 **State（貼到左上）**
@@ -191,6 +217,8 @@ curl -s https://api.typesafe.ai/v1/systemone -H "Authorization: Bearer $TYPESAFE
 
 ### 案例 3　履歷初篩｜條件逐項判斷
 
+[▶ 看實測影片](https://github.com/hirosichen/jev-workshop/raw/main/videos/05-case3-resume.mp4)
+
 講義實測：廣告經驗 95%｜GA4 5%｜影音剪輯 95%｜符合度 1.2（部分符合）。
 
 **State（貼到左上）**
@@ -231,6 +259,8 @@ curl -s https://api.typesafe.ai/v1/systemone -H "Authorization: Bearer $TYPESAFE
 ```
 
 ### 案例 4　說不清楚的客訴｜不確定時會說不確定
+
+[▶ 看實測影片](https://github.com/hirosichen/jev-workshop/raw/main/videos/06-case4-unclear.mp4)
 
 講義實測：其他或無法判斷 96%｜生氣 24%。
 

@@ -297,4 +297,3 @@ npm run triage
 - 已知弱點：<https://docs.typesafe.ai/model-jaggedness/jev-1.13>
 - 語言支援與資料處理：<https://docs.typesafe.ai/models>
 - 官方 Cookbooks：<https://docs.typesafe.ai/cookbooks>
-- Flavio Copes〈A deep dive into Jev〉：<https://flaviocopes.com/jev/>

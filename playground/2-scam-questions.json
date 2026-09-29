@@ -1,0 +1,26 @@
+{
+  "is_scam": {
+    "type": "noul",
+    "instructions": "`sms` 是否是詐騙訊息？"
+  },
+  "scam_type": {
+    "type": "choice",
+    "instructions": "`sms` 屬於哪一種類型？",
+    "criteria": {
+      "fake_cs": "假冒客服、解除分期或誤設會員",
+      "package": "包裹未領、物流通知",
+      "investment": "投資、飆股群組",
+      "prize": "中獎、領獎",
+      "normal": "正常通知，不是詐騙"
+    }
+  },
+  "risk": {
+    "type": "score",
+    "instructions": "照 `sms` 的要求去做，損失風險有多高？",
+    "criteria": [
+      "無風險：一般資訊",
+      "中風險：可能洩漏個資",
+      "高風險：可能被騙走金錢"
+    ]
+  }
+}

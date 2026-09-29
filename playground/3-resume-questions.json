@@ -1,0 +1,23 @@
+{
+  "ads_2y": {
+    "type": "noul",
+    "instructions": "`resume` 是否有 2 年以上數位廣告投放經驗？"
+  },
+  "ga4": {
+    "type": "noul",
+    "instructions": "`resume` 是否提到 GA4 或網站數據分析工具？"
+  },
+  "video": {
+    "type": "noul",
+    "instructions": "`resume` 是否有影音剪輯能力？"
+  },
+  "fit": {
+    "type": "score",
+    "instructions": "`resume` 與 `job` 的整體符合程度？",
+    "criteria": [
+      "不符合：缺少主要條件",
+      "部分符合：有主要經驗但缺一項必要條件",
+      "高度符合：必要條件都具備"
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "team": {
+    "type": "choice",
+    "instructions": "這則 `message` 應該交給哪個部門？",
+    "criteria": {
+      "billing": "帳務、扣款、退款",
+      "tech": "故障、錯誤、閃退",
+      "sales": "價格、方案、購買",
+      "other": "其他或無法判斷"
+    }
+  },
+  "angry": {
+    "type": "noul",
+    "instructions": "`message` 的作者是否很生氣？"
+  }
+}

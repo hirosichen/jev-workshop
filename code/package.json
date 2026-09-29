@@ -1,0 +1,12 @@
+{
+  "name": "jev-workshop-code",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "triage": "node --env-file=.env 02-triage.mjs",
+    "router": "node --env-file=.env 03-router.mjs",
+    "guard": "node --env-file=.env 04-shell-guard.mjs",
+    "cost": "node 05-cost.mjs"
+  },
+  "dependencies": { "@typesafe-ai/sdk": "^0.6.0" }
+}

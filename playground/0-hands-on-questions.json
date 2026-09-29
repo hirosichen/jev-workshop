@@ -1,0 +1,24 @@
+{
+  "angry": {
+    "type": "noul",
+    "instructions": "`message` 的作者是否很生氣？"
+  },
+  "team": {
+    "type": "choice",
+    "instructions": "這則 `message` 應該交給哪個部門？",
+    "criteria": {
+      "billing": "帳務、扣款、退款",
+      "tech": "故障、錯誤、閃退",
+      "sales": "價格、方案、購買"
+    }
+  },
+  "urgency": {
+    "type": "score",
+    "instructions": "這則 `message` 有多緊急？",
+    "criteria": [
+      "不急：一般詢問",
+      "有點急：影響使用但可以等",
+      "很急：客戶可能流失"
+    ]
+  }
+}

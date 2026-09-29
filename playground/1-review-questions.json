@@ -1,0 +1,28 @@
+{
+  "sentiment": {
+    "type": "choice",
+    "instructions": "`review` 整體的情緒是？",
+    "criteria": {
+      "positive": "整體滿意",
+      "mixed": "有好有壞",
+      "negative": "整體不滿"
+    }
+  },
+  "shipping_issue": {
+    "type": "noul",
+    "instructions": "`review` 是否抱怨物流或配送？"
+  },
+  "product_defect": {
+    "type": "noul",
+    "instructions": "`review` 是否說商品本身有瑕疵或故障？"
+  },
+  "recommend": {
+    "type": "score",
+    "instructions": "作者推薦這個商品的意願有多高？",
+    "criteria": [
+      "不推薦：勸別人不要買",
+      "普通：沒有明確推薦",
+      "推薦：明確說會推薦給別人"
+    ]
+  }
+}

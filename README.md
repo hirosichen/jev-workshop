@@ -317,6 +317,34 @@ npm run triage
 
 ---
 
+## 延伸：Jev 跟 Claude、ChatGPT 比起來如何？
+
+以下截圖取自 TypeSafe 官方頁面（2026/09/30 擷取）。
+
+**1. 官方不公布公開 benchmark 分數**，建議用自己的案例做評測。
+
+![FAQ：不公布公開 benchmark](images/official/5-faq-no-public-benchmarks.png)
+
+**2. 官方自己的 workflow 評測**：4 個真實工作流程（資安事件、Agent 追蹤、發票處理、客服），標準答案用 GPT-6 Astra 與 Claude Fable 5.1 的平均。菱形＝把工作拆成小題（workflow），圓點＝一次丟給模型（prompt）。
+
+![官方 workflow 評測：準確度 vs 成本](images/official/3-workflow-evals.png)
+
+讀圖重點：Jev 約 68%，和 GPT-5.6 Terra、Claude Sonnet 5 同一級；高於 Haiku 4.5（約 54%），低於 Opus 5（約 73%）與 GPT Sol（約 74%）；但每次成本便宜約 2 個數量級。官方另外說 GPT-5.6 Terra 是「平均智力最接近 Jev」的模型：
+
+![官方：GPT-5.6 Terra 最接近 Jev](images/official/2-terra-comparable.png)
+
+**3. 官方自己揭露的偏差**：題目由他們團隊設計、標準答案偏向 OpenAI 與 Anthropic 的模型。
+
+![官方揭露評測偏差](images/official/4-reference-models.png)
+
+評測網站首頁可切換各流程看細節：<https://evals.typesafe.ai/>
+
+![Workflow evals 網站](images/official/6-evals-site.png)
+
+> 這些比較只適用「分類、路由、評分、是非判斷」這類 System One 任務。Jev 不產生文字、不寫程式，不能拿來比寫作或推理能力。
+
+---
+
 ## 參考資料
 
 以下網址皆於 2026/09/29 開啟核對。
@@ -327,3 +355,5 @@ npm run triage
 - 已知弱點：<https://docs.typesafe.ai/model-jaggedness/jev-1.13>
 - 語言支援與資料處理：<https://docs.typesafe.ai/models>
 - 官方 Cookbooks：<https://docs.typesafe.ai/cookbooks>
+- Jev 發表文（評測與比較）：<https://typesafe.ai/blog/introducing-system-one-models-and-jev>
+- 官方 Workflow evals：<https://evals.typesafe.ai/>

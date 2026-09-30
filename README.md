@@ -321,6 +321,32 @@ npm run triage
 
 **進階：從 OpenSpec 規劃到 Jev 驗證，一條線做完**
 
+### 重點：裝好這個 Stop hook
+
+Claude 每次要結束工作時，hook 會請 Jev 檢查 `openspec/changes/` 的每個 Scenario 在 `e2e/` 裡有沒有對應的測試；有缺就擋下，Claude 必須先補測試。
+
+```bash
+# 在你的專案根目錄
+npm install @typesafe-ai/sdk
+mkdir -p .claude/hooks
+curl -o .claude/hooks/spec-coverage-hook.mjs https://raw.githubusercontent.com/hirosichen/jev-workshop/main/code/e2e-intent/spec-coverage-hook.mjs
+export TYPESAFE_API_KEY=你的金鑰   # 需在啟動 Claude Code 的同一個終端機
+```
+
+`.claude/settings.json`：
+
+```json
+{
+  "hooks": {
+    "Stop": [{ "hooks": [{ "type": "command", "command": "node .claude/hooks/spec-coverage-hook.mjs" }] }]
+  }
+}
+```
+
+設定後在 Claude Code 執行 `/hooks` 確認有載入。沒有金鑰或沒有 OpenSpec 情境時，hook 直接放行，不會卡住工作。
+
+### 完整流程
+
 目標：規格一寫好，就同時決定「怎麼驗證」；Claude 寫完程式後自動檢查每個情境都有測試；上線後同一批測試持續用 Jev 驗證行為。檔案都在 [`code/e2e-intent/`](code/e2e-intent/)。
 
 > Jev 只看文字，不看程式碼也不看圖。它驗證的是「畫面上的行為」是否符合目的；程式碼本身的審查仍交給 Claude（例如 `/code-review`）。
@@ -404,15 +430,7 @@ test('Empty result guidance', async ({ page }) => {
 
 [`spec-coverage-hook.mjs`](code/e2e-intent/spec-coverage-hook.mjs) 是 Claude Code 的 Stop hook：讀 `openspec/changes/` 裡的所有 Scenario 和 `e2e/` 裡的 `test()` 標題，請 Jev 判斷哪些情境沒有被測到。有缺就擋下，Claude 會收到清單並先補測試。
 
-把檔案放到專案的 `.claude/hooks/`（專案需已 `npm install @typesafe-ai/sdk`），環境變數要有 `TYPESAFE_API_KEY`，再加進 `.claude/settings.json`：
-
-```json
-{
-  "hooks": {
-    "Stop": [{ "hooks": [{ "type": "command", "command": "node .claude/hooks/spec-coverage-hook.mjs" }] }]
-  }
-}
-```
+安裝方式見本節開頭的[重點](#重點裝好這個-stop-hook)。
 
 **步驟 4｜上線後：同一批測試放進 CI 或 Checkly 排程跑**
 
@@ -427,6 +445,22 @@ test('Empty result guidance', async ({ page }) => {
 ## Jev vs Claude and ChatGPT
 
 **延伸：Jev 跟 Claude、ChatGPT 比起來如何？**
+
+### 結論：準確度約等於 Claude Sonnet 5／GPT-5.6 Terra，成本便宜約 100 倍
+
+| 模型 | 官方 workflow 評測準確度（約） | 和 Jev 比 |
+| --- | --- | --- |
+| GPT Sol | 74% | 高一級 |
+| Claude Opus 5 | 73% | 高一級 |
+| **Jev** | **68%** | — |
+| GPT-5.6 Terra | 68% | 同級（官方稱「平均智力最接近 Jev」） |
+| Claude Sonnet 5 | 68% | 同級 |
+| Claude Haiku 4.5 | 54% | 低一級 |
+
+- 數字是從官方圖表目測，官方沒有公布數值，也不公布公開 benchmark 分數。
+- 只適用「分類、路由、評分、是非判斷」這類 System One 任務；Jev 不寫文章、不寫程式，不能拿來比這些能力。
+
+### 官方證據
 
 以下截圖取自 TypeSafe 官方頁面（2026/09/30 擷取）。
 

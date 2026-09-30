@@ -424,7 +424,9 @@ test('Empty result guidance', async ({ page }) => {
 
 ---
 
-## 延伸：Jev 跟 Claude、ChatGPT 比起來如何？
+## Jev vs Claude and ChatGPT
+
+**延伸：Jev 跟 Claude、ChatGPT 比起來如何？**
 
 以下截圖取自 TypeSafe 官方頁面（2026/09/30 擷取）。
 

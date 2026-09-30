@@ -317,6 +317,61 @@ npm run triage
 
 ---
 
+## 進階：從 OpenSpec 規劃到 Jev 驗證，一條線做完
+
+目標：規格一寫好，就同時決定「怎麼驗證」；Claude 寫完程式後自動檢查每個情境都有測試；上線後同一批測試持續用 Jev 驗證行為。檔案都在 [`code/e2e-intent/`](code/e2e-intent/)。
+
+> Jev 只看文字，不看程式碼也不看圖。它驗證的是「畫面上的行為」是否符合目的；程式碼本身的審查仍交給 Claude（例如 `/code-review`）。
+
+**步驟 1｜規劃：在 spec 裡標出要給 Jev 判斷的條件**
+
+把 [`openspec-config.yaml`](code/e2e-intent/openspec-config.yaml) 的 `rules` 合併進專案的 `openspec/config.yaml`。之後每次 `/opsx:propose`，產出的 spec 會把語意性的 THEN 標成 `[jev]`，tasks 最後也會自動多一組 E2E 任務。
+
+```markdown
+#### Scenario: Empty result guidance
+- WHEN a search has no results
+- THEN the page tells the user what to try next [jev]
+```
+
+**步驟 2｜實作：Playwright 測試用 `expectIntent` 驗證 `[jev]` 條件**
+
+[`jev-expect.mjs`](code/e2e-intent/jev-expect.mjs) 把頁面文字送給 Jev，一次問完所有條件。機率 ≥ 0.8 通過、≤ 0.2 失敗，中間的印出 `UNSURE` 請人看。
+
+```js
+import { expectIntent } from './jev-expect.mjs'
+
+test('Empty result guidance', async ({ page }) => {
+  await page.goto('/search?q=zzzz')
+  await expectIntent(page, {
+    guidance: 'Does `page` tell the user what to try next?',
+  })
+})
+```
+
+**步驟 3｜把關：Claude 要結束前，檢查每個情境都有測試**
+
+[`spec-coverage-hook.mjs`](code/e2e-intent/spec-coverage-hook.mjs) 是 Claude Code 的 Stop hook：讀 `openspec/changes/` 裡的所有 Scenario 和 `e2e/` 裡的 `test()` 標題，請 Jev 判斷哪些情境沒有被測到。有缺就擋下，Claude 會收到清單並先補測試。
+
+把檔案放到專案的 `.claude/hooks/`（專案需已 `npm install @typesafe-ai/sdk`），環境變數要有 `TYPESAFE_API_KEY`，再加進 `.claude/settings.json`：
+
+```json
+{
+  "hooks": {
+    "Stop": [{ "hooks": [{ "type": "command", "command": "node .claude/hooks/spec-coverage-hook.mjs" }] }]
+  }
+}
+```
+
+**步驟 4｜上線後：同一批測試放進 CI 或 Checkly 排程跑**
+
+`[jev]` 條件每次約 0.3 秒、不到 US$0.001，可以每次部署都跑。
+
+實測（2026/09/30）：hook 在缺一個情境時正確擋下（exit 2）、補上後放行；`expectIntent` 對「找不到商品時是否提示下一步」判定通過，對故意寫錯的條件回傳 p=0.02 並判定失敗。
+
+寫 Jev 程式時建議搭配官方 skill：`claude plugin marketplace add typesafe-ai/skills` → `claude plugin install typesafe@typesafe-ai` → `/reload-plugins`。
+
+---
+
 ## 延伸：Jev 跟 Claude、ChatGPT 比起來如何？
 
 以下截圖取自 TypeSafe 官方頁面（2026/09/30 擷取）。

@@ -1,0 +1,11 @@
+# 合併進專案的 openspec/config.yaml（OpenSpec 1.x）
+schema: spec-driven
+
+rules:
+  specs:
+    - 每個 Scenario 的 THEN 分兩類：可精確比對的（元素、數值、網址）寫一般斷言；語意性的（內容是否相關、訊息是否清楚）在句尾標 [jev]
+    - "[jev] 條件要寫成可用是/否回答的英文問題，並用反引號指向 `page`，例如：Does `page` explain what the user should do next?"
+    - 不要把計數、數學、日期比較寫成 [jev]，這些留給一般斷言
+  tasks:
+    - 最後一組任務固定為 E2E：每個 Scenario 一個 Playwright test()，標題以 Scenario 名稱開頭
+    - "[jev] 條件用 code/e2e-intent/jev-expect.mjs 的 expectIntent(page, {...}) 驗證"

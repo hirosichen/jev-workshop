@@ -317,9 +317,9 @@ npm run triage
 
 ---
 
-<a id="openspec-jev"></a>
+## OpenSpec Jev Workflow
 
-## 進階：從 OpenSpec 規劃到 Jev 驗證，一條線做完
+**進階：從 OpenSpec 規劃到 Jev 驗證，一條線做完**
 
 目標：規格一寫好，就同時決定「怎麼驗證」；Claude 寫完程式後自動檢查每個情境都有測試；上線後同一批測試持續用 Jev 驗證行為。檔案都在 [`code/e2e-intent/`](code/e2e-intent/)。
 

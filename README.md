@@ -323,6 +323,56 @@ npm run triage
 
 > Jev 只看文字，不看程式碼也不看圖。它驗證的是「畫面上的行為」是否符合目的；程式碼本身的審查仍交給 Claude（例如 `/code-review`）。
 
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Dev as 開發者
+    participant CC as Claude Code
+    participant OS as OpenSpec
+    participant Hook as Stop Hook
+    participant Jev as Jev
+    participant CI as CI / Checkly
+    participant App as 網站
+
+    Note over Dev,OS: 步驟 1　規劃
+    Dev->>CC: /opsx:propose 描述需求
+    CC->>OS: openspec instructions
+    OS-->>CC: config.yaml 的 rules（[jev] 標記、E2E 任務）
+    CC->>OS: 寫 proposal / specs / tasks，語意性 THEN 標 [jev]
+
+    Note over Dev,CC: 步驟 2　實作
+    Dev->>CC: /opsx:apply
+    CC->>CC: 寫程式＋每個 Scenario 一個 Playwright test()
+
+    Note over CC,Jev: 步驟 3　把關
+    CC->>Hook: 準備結束（Stop）
+    Hook->>OS: 讀 openspec/changes 的所有 Scenario
+    Hook->>Jev: Scenario 清單＋test() 標題，每個情境一題 noul
+    Jev-->>Hook: 每個情境「已被測到」的機率
+    alt 有情境沒有測試
+        Hook-->>CC: exit 2＋缺漏清單
+        CC->>CC: 補上缺的測試
+        CC->>Hook: 再次結束（stop_hook_active）
+        Hook-->>CC: 放行
+    else 全部都有測試
+        Hook-->>CC: exit 0 放行
+    end
+    CC-->>Dev: 完成
+
+    Note over CI,App: 步驟 4　上線後持續驗證
+    CI->>App: Playwright 操作頁面
+    App-->>CI: 頁面文字
+    CI->>Jev: 頁面文字＋[jev] 條件（expectIntent）
+    Jev-->>CI: 每個條件的 noul 機率
+    alt p ≥ 0.8
+        CI->>CI: 通過
+    else p ≤ 0.2
+        CI->>CI: 失敗，回報違反的條件
+    else 介於中間
+        CI->>CI: UNSURE，請人工確認
+    end
+```
+
 **步驟 1｜規劃：在 spec 裡標出要給 Jev 判斷的條件**
 
 把 [`openspec-config.yaml`](code/e2e-intent/openspec-config.yaml) 的 `rules` 合併進專案的 `openspec/config.yaml`。之後每次 `/opsx:propose`，產出的 spec 會把語意性的 THEN 標成 `[jev]`，tasks 最後也會自動多一組 E2E 任務。
